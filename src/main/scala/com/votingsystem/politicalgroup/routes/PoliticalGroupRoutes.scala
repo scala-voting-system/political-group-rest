@@ -27,7 +27,7 @@ class PoliticalGroupRoutes[F[_]: Concurrent: Logger] private (politicalGroupsSer
   }
 
   private val filterPoliticalGroupsRoute: HttpRoutes[F] = HttpRoutes.of[F] {
-    case req @ POST -> Root :? OffsetQueryParam(offset) +& LimitQueryParam(limit) =>
+    case req @ POST -> Root / "filter" :? OffsetQueryParam(offset) +& LimitQueryParam(limit) =>
       for {
         filter <- req.as[PoliticalGroupFilter].logError(error => s"Filter failure: $error")
         politicalGroups <- politicalGroupsService

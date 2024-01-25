@@ -69,8 +69,7 @@ class LivePoliticalGroupsService[F[_]: MonadCancelThrow: Logger] private (xa: Tr
       fr"FROM political_groups"
 
     val whereFragment: Fragment = {
-      fr"WHERE is_active = true" ++
-      Fragments.whereAndOpt(filter.name.map(name => fr"name LIKE '%$name%'"))
+      Fragments.whereAndOpt(Some(fr"is_active = true"), filter.name.map(name => fr"name LIKE $name"))
     }
 
     val paginationFragment: Fragment =
